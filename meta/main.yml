@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Government Digital Service
+  description: Installs and setups wal-e service for postgres log shipping to object storage
+  company: Government Digital Service, Cabinet Office
+  license: MIT
+  min_ansible_version: 1.2
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  categories:
+  - system
+dependencies: []
