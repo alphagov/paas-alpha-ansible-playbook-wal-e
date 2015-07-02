@@ -67,6 +67,5 @@
     weekday="{{ wal_e_base_backup_weekday}}"
     month="{{ wal_e_base_backup_month }}"
     user="{{ wal_e_user }}"
-    job="/usr/bin/envdir {{ wal_e_envdir }} /usr/local/bin/wal-e backup-push {% if wal_e_aws_instance_profile %}--aws-instance-profile{% endif %} {{wal_e_base_backup_options}} {{ wal_e_pgdata_dir }}"
-
+    job="/usr/bin/envdir {{ wal_e_envdir }} /usr/local/bin/wal-e {% if wal_e_aws_instance_profile %}--aws-instance-profile{% endif %} backup-push {{wal_e_base_backup_options}} {{ wal_e_pgdata_dir }}"
   when: not wal_e_base_backup_disabled
