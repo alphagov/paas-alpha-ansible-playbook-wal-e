@@ -77,6 +77,17 @@ Example Playbook
 	wal_e_aws_secret_key: 'MY_SECRET_KEY'
 ```
 
+How to test this playbook?
+--------------------------
+
+There is a `Vagrantfile` and `site.yml` which allow test the playbook with
+vagrant. Just execute:
+
+```
+vagrant up # first provision
+vagrant provision # to rerun ansible
+```
+
 License
 -------
 
