@@ -16,6 +16,8 @@ wal_e_pips:
   - argparse
   - boto
   - gevent
+  - six==1.9.0
+  - requests==2.5.2
 
 wal_e_version: 0.7.0
 
