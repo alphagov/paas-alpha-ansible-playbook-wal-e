@@ -1,2 +1,72 @@
 ---
-# tasks file for wal-e
+# tasks file for wal_e
+
+
+- name: Install dependency packages
+  apt: update_cache=true name="{{ item }}"
+  with_items: "{{ wal_e_packages }}"
+
+- name: install python dependency modules with pip
+  pip: name="{{ item }}"
+  with_items: "{{ wal_e_pips }}"
+  when: wal_e_pips
+
+- name: install wal-e from pip
+  pip: name="wal-e" version="{{ wal_e_version | default(none) }}"
+  when: wal_e_pips
+
+- name: create wal-e envdir for configuration
+  file: path="{{ wal_e_envdir }}" state=directory owner="{{ wal_e_user}}" group="{{ wal_e_group }}"
+
+- name: setup AWS credentials AWS_ACCESS_KEY_ID
+  copy: |
+    content="{{ wal_e_aws_access_key }}"
+    dest="{{ wal_e_envdir }}/AWS_ACCESS_KEY_ID"
+    owner="{{ wal_e_user}}"
+    group="{{ wal_e_group }}"
+    mode=0600
+  when: wal_e_aws_access_key
+
+- name: setup AWS credentials AWS_ACCESS_KEY_ID
+  file: |
+    state=absent
+    path="{{ wal_e_envdir }}/AWS_ACCESS_KEY_ID"
+  when: not wal_e_aws_access_key
+
+- name: setup AWS credentials AWS_SECRET_ACCESS_KEY
+  copy: |
+    content="{{ wal_e_aws_secret_key }}"
+    dest="{{ wal_e_envdir }}/AWS_SECRET_ACCESS_KEY"
+    owner="{{ wal_e_user}}"
+    group="{{ wal_e_group }}"
+    mode=0600
+  when: wal_e_aws_secret_key
+
+- name: setup AWS credentials AWS_SECRET_KEY_ID
+  file: |
+    state=absent
+    path="{{ wal_e_envdir }}/AWS_SECRET_KEY_ID"
+  when: not wal_e_aws_secret_key
+
+- name: setup WAL-E S3 bucket prefix
+  copy: |
+    content="{{ wal_e_s3_prefix }}"
+    dest="{{ wal_e_envdir }}/WALE_S3_PREFIX"
+    owner="{{ wal_e_user}}"
+    group="{{ wal_e_group }}"
+    mode=0644
+
+# Creates a cron file under /etc/cron.d
+- name: Setup cron job for the base backup
+  cron: |
+    name=wal_e_base_backup
+    cron_file=wal_e_base_backup
+    minute="{{ wal_e_base_backup_minute }}"
+    hour="{{ wal_e_base_backup_hour }}"
+    day="{{ wal_e_base_backup_day }}"
+    weekday="{{ wal_e_base_backup_weekday}}"
+    month="{{ wal_e_base_backup_month }}"
+    user="{{ wal_e_user }}"
+    job="/usr/bin/envdir {{ wal_e_envdir }} /usr/local/bin/wal-e backup-push {% if wal_e_aws_instance_profile %}--aws-instance-profile{% endif %} {{wal_e_base_backup_options}} {{ wal_e_pgdata_dir }}"
+
+  when: not wal_e_base_backup_disabled
