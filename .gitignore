@@ -1,0 +1,11 @@
+.vagrant
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+
+# virtualenv
+.env/*
+
