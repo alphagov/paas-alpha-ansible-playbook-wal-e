@@ -19,7 +19,7 @@ This is the list of variables used in this role and their defaults
 
 AWS configuration (required):
 
- * `wal_e_s3_prefix` set the bucket url and prefix where store the values.
+ * `wal_e_s3_prefix` set the bucket url and prefix where to store the values.
     More info in [WAL-E Documentation](https://github.com/wal-e/wal-e#backend-blob-store)
 
  * `wal_e_aws_instance_profile: false` Set it to `true` to enable IAM instance profiles.
@@ -30,9 +30,20 @@ AWS configuration (required):
 
  * `wal_e_aws_access_key` and `wal_e_aws_secret_key` AWS S3 credentials
 
+GCE configuration:
+
+ * `wal_e_s3_prefix` the same as AWS. However, do not use dots in the bucket name, use hyphens instead dots.
+
+ * `wal_e_aws_instance_profile: false` This must stay as false as we will not use IAM instance profile.
+
+ * `wal_e_aws_access_key` and `wal_e_aws_secret_key` Google Storage access key and secret. These can be generated from `Interoperability` tab in Google Storage dashboard.
+
+ * `wal_e_s3_endpoint` set it to "http+path://storage.googleapis.com". GS has interoperability mode which has identical interface to S3.
+
+
 Installation options:
 
- * `wal_e_version: 0.7.0` version of WAL-E to install
+ * `wal_e_version: 0.8.0` version of WAL-E to install
  * `wal_e_pgdata_dir: '/var/lib/postgresql/9.1/main/'` location of the backup data
 
 
@@ -92,4 +103,3 @@ License
 -------
 
 See LICENSE file.
-
