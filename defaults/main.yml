@@ -19,7 +19,7 @@ wal_e_pips:
   - six==1.9.0
   - requests==2.5.2
 
-wal_e_version: 0.7.0
+wal_e_version: 0.8.0
 
 wal_e_envdir: '/etc/wal-e'
 
@@ -48,4 +48,3 @@ wal_e_aws_instance_profile: false
 # Recommended store this using ansible-vault (http://docs.ansible.com/playbooks_vault.html)
 wal_e_aws_access_key:
 wal_e_aws_secret_key:
-
