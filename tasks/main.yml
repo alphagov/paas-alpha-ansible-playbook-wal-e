@@ -25,13 +25,13 @@
     owner="{{ wal_e_user}}"
     group="{{ wal_e_group }}"
     mode=0600
-  when: wal_e_aws_access_key
+  when: wal_e_aws_access_key|default("") != ""
 
 - name: setup AWS credentials AWS_ACCESS_KEY_ID
   file: |
     state=absent
     path="{{ wal_e_envdir }}/AWS_ACCESS_KEY_ID"
-  when: not wal_e_aws_access_key
+  when: wal_e_aws_access_key|default("") == ""
 
 - name: setup AWS credentials AWS_SECRET_ACCESS_KEY
   copy: |
@@ -40,13 +40,28 @@
     owner="{{ wal_e_user}}"
     group="{{ wal_e_group }}"
     mode=0600
-  when: wal_e_aws_secret_key
+  when: wal_e_aws_secret_key|default("") != ""
 
-- name: setup AWS credentials AWS_SECRET_KEY_ID
+- name: setup AWS credentials AWS_SECRET_ACCESS_KEY
   file: |
     state=absent
-    path="{{ wal_e_envdir }}/AWS_SECRET_KEY_ID"
-  when: not wal_e_aws_secret_key
+    path="{{ wal_e_envdir }}/AWS_SECRET_ACCESS_KEY"
+  when: wal_e_aws_secret_key|default("") == ""
+
+- name: setup WAL-E S3 endpoint
+  copy: |
+    content="{{ wal_e_s3_endpoint }}"
+    dest="{{ wal_e_envdir }}/WALE_S3_ENDPOINT"
+    owner="{{ wal_e_user}}"
+    group="{{ wal_e_group }}"
+    mode=0600
+  when: wal_e_s3_endpoint|default("") != ""
+
+- name: setup WAL-E S3 endpoint
+  file: |
+    state=absent
+    path="{{ wal_e_envdir }}/WALE_S3_ENDPOINT"
+  when: wal_e_s3_endpoint|default("") == ""
 
 - name: setup WAL-E S3 bucket prefix
   copy: |
