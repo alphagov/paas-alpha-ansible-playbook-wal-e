@@ -16,13 +16,13 @@
   when: wal_e_pips
 
 - name: create wal-e envdir for configuration
-  file: path="{{ wal_e_envdir }}" state=directory owner="{{ wal_e_user}}" group="{{ wal_e_group }}"
+  file: path="{{ wal_e_envdir }}" state=directory owner="{{ wal_e_user }}" group="{{ wal_e_group }}"
 
 - name: setup AWS credentials AWS_ACCESS_KEY_ID
   copy: |
     content="{{ wal_e_aws_access_key }}"
     dest="{{ wal_e_envdir }}/AWS_ACCESS_KEY_ID"
-    owner="{{ wal_e_user}}"
+    owner="{{ wal_e_user }}"
     group="{{ wal_e_group }}"
     mode=0600
   when: wal_e_aws_access_key|default("") != ""
@@ -37,7 +37,7 @@
   copy: |
     content="{{ wal_e_aws_secret_key }}"
     dest="{{ wal_e_envdir }}/AWS_SECRET_ACCESS_KEY"
-    owner="{{ wal_e_user}}"
+    owner="{{ wal_e_user }}"
     group="{{ wal_e_group }}"
     mode=0600
   when: wal_e_aws_secret_key|default("") != ""
@@ -52,22 +52,22 @@
   copy: |
     content="{{ wal_e_s3_endpoint }}"
     dest="{{ wal_e_envdir }}/WALE_S3_ENDPOINT"
-    owner="{{ wal_e_user}}"
+    owner="{{ wal_e_user }}"
     group="{{ wal_e_group }}"
     mode=0600
-  when: wal_e_s3_endpoint|default("") != ""
+  when: "wal_e_s3_endpoint is defined"
 
-- name: setup WAL-E S3 endpoint
+- name: setup default WAL-E S3 endpoint
   file: |
     state=absent
     path="{{ wal_e_envdir }}/WALE_S3_ENDPOINT"
-  when: wal_e_s3_endpoint|default("") == ""
+  when: "wal_e_s3_endpoint is not defined"
 
 - name: setup WAL-E S3 bucket prefix
   copy: |
     content="{{ wal_e_s3_prefix }}"
     dest="{{ wal_e_envdir }}/WALE_S3_PREFIX"
-    owner="{{ wal_e_user}}"
+    owner="{{ wal_e_user }}"
     group="{{ wal_e_group }}"
     mode=0644
 
