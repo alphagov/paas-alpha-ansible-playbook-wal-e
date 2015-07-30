@@ -32,6 +32,15 @@ wal_e_base_backup_weekday:  '1'
 
 wal_e_base_backup_options: ''
 
+wal_e_backup_delete_disabled: false
+wal_e_backup_delete_minute:   '0'
+wal_e_backup_delete_hour:     '0'
+wal_e_backup_delete_day:      '*'
+wal_e_backup_delete_month:    '*'
+wal_e_backup_delete_weekday:  '*'
+
+wal_e_backup_delete_retain: '5'
+
 wal_e_user: 'postgres'
 wal_e_group: 'postgres'
 wal_e_pgdata_dir: '/var/lib/postgresql/9.1/main/'
