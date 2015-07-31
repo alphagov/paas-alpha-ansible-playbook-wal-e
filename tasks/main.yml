@@ -84,3 +84,17 @@
     user="{{ wal_e_user }}"
     job="/usr/bin/envdir {{ wal_e_envdir }} /usr/local/bin/wal-e {% if wal_e_aws_instance_profile %}--aws-instance-profile{% endif %} backup-push {{wal_e_base_backup_options}} {{ wal_e_pgdata_dir }}"
     state="{% if wal_e_base_backup_disabled %}absent{% else %}present{% endif %}"
+
+# Creates a cron file under /etc/cron.d
+- name: Setup cron job for the rotation of backups
+  cron: |
+    name=wal_e_backup_delete
+    cron_file=wal_e_backup_delete
+    minute="{{ wal_e_backup_delete_minute }}"
+    hour="{{ wal_e_backup_delete_hour }}"
+    day="{{ wal_e_backup_delete_day }}"
+    weekday="{{ wal_e_backup_delete_weekday}}"
+    month="{{ wal_e_backup_delete_month }}"
+    user="{{ wal_e_user }}"
+    job="/usr/bin/envdir {{ wal_e_envdir }} /usr/local/bin/wal-e {% if wal_e_aws_instance_profile %}--aws-instance-profile{% endif %} delete --confirm retain {{wal_e_backup_delete_retain}}"
+    state="{% if wal_e_backup_delete_disabled %}absent{% else %}present{% endif %}"
